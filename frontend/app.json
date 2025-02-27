@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "skynalize-react-native",
-    "slug": "skynalize-react-native",
+    "name": "skynalize-task-app",
+    "slug": "skynalize-task-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,9 +22,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro"
-    },
-    "plugins": ["expo-router"]
+      "favicon": "./assets/favicon.png"
+    }
   }
 }
