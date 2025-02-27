@@ -14,6 +14,6 @@ datasource db {
 }
 
 model Task {
-  id   String @id @default(cuid())
+  id   String @id
   task String
 }

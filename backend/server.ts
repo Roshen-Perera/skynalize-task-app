@@ -6,17 +6,13 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors({
-    origin: "http://localhost:8081",  // Allow frontend requests
-    methods: "GET, POST, PUT, PATCH, DELETE, OPTIONS",
-    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-    credentials: true
-}));
+app.use(cors()); // Allow all origins
+
 
 app.use('/task',taskRoutes);
 
-app.listen(3000, (err => {
-    console.log("Server running on port 3000");
+app.listen(3003, (err => {
+    console.log("Server running on port 3003");
 }));
 
 app.use('/health', (req, res, next) => {

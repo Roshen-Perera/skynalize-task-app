@@ -1,11 +1,54 @@
+import { useState } from "react";
 import {Text, TextInput, View, StyleSheet, Button, TouchableOpacity, KeyboardAvoidingView, Platform} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import Tasks from "../model/Task";
+import { addTask } from "../reducers/TaskSlice";
+import { AppDispatch } from "../store/Store";
+
+
 
 export default function AddTask() {
+    function generateId() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+
+      return `T-${year}${month}${day}-${hours}${minutes}${seconds}`;
+    }
+
+    const [id, setId] = useState<string>("");
+    const [task, setTask] = useState<string>("");
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handleAddTask = async () => {
+      setId(generateId());
+      console.log(id);
+
+      console.log(task);
+      const newTask = new Tasks(id, task);
+      try {
+        await dispatch(addTask(newTask));
+        console.log("Vehicle data saved successfully.");
+      } catch (e) {
+        console.error("Error saving vehicle data:", e);
+      }
+    };
+
     return (
       <View style={styles.container}>
-        <TextInput style={styles.input} placeholder={"Write a task"} />
+        <TextInput
+          style={styles.input}
+          placeholder={"Write a task"}
+          value={task}
+          onChangeText={(text) => setTask(text)}
+        />{" "}
         <View style={styles.button}>
-          <Button title="Add Task" />
+          <Button title="Add Task" onPress={handleAddTask} />
         </View>
       </View>
     );

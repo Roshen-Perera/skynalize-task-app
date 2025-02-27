@@ -6,40 +6,40 @@ import  Tasks  from "../model/Task";
 export const initialState: Tasks[] = [];
 
 const api = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://10.50.238.18:3000",
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 export const addTask = createAsyncThunk(
   "Task/addTask",
-  async (Task: Tasks) => {
+  async (task: Tasks) => {
     try {
-      const response = await api.post("/Task/add", Task);
+      console.log("task", task);
+
+      const response = await api.post("/task/add", task);
+      console.log("Response:", response);
       alert("Task Added Successfully");
       return response.data.message;
-    } catch (error) {
+    } catch (error: any) {
       alert("Failed to add Task");
-      console.log("error", error);
+      console.log("Error:", error);
+      if (error.response) {
+        console.log("Response Error:", error.response.data);
+      } else if (error.request) {
+        console.log("Request Error:", error.request);
+      } else {
+        console.log("Error Message:", error.message);
+      }
     }
   }
 );
-
 export const deleteTask = createAsyncThunk(
   "Task/deleteTask",
   async (id: string) => {
     try {
-      const response = await api.delete(`/Task/delete/${id}`);
-      return response.data;
-    } catch (error) {
-      return console.log("error", error);
-    }
-  }
-);
-
-export const updateTask = createAsyncThunk(
-  "Task/updateTask",
-  async (Task: Tasks) => {
-    try {
-      const response = await api.put(`/Task/update/${Task.id}`);
+      const response = await api.delete(`/task/delete/${id}`);
       return response.data;
     } catch (error) {
       return console.log("error", error);
@@ -65,16 +65,8 @@ const TaskSlice = createSlice({
       state.push(action.payload);
     },
     deleteTask(state, action: PayloadAction<string>) {
-      state = state.filter((Task) => Task.id !== action.payload);
-    },
-    updateTasks: (state, action: PayloadAction<Tasks>) => {
-      const index = state.findIndex(
-        (Task) => Task.id === action.payload.id
-      );
-      if (index > -1) {
-        state[index] = action.payload;
-      }
-    },
+
+    }
   },
   extraReducers: (builder) => {
 
@@ -93,7 +85,7 @@ const TaskSlice = createSlice({
       // Delete Task
     builder
       .addCase(deleteTask.fulfilled, (state, action) => {
-        state = state.filter((Task) => Task.id !== action.payload);
+        // state = state.filter((Task) => Task.id !== action.payload);
       })
       .addCase(deleteTask.rejected, (state, action) => {
         console.log("Failed to delete Task", action.payload);
@@ -101,23 +93,6 @@ const TaskSlice = createSlice({
       .addCase(deleteTask.pending, (state, action) => {
         console.log("Deleting Task", action.payload);
       });
-
-      // Update Task
-    builder
-      .addCase(updateTask.fulfilled, (state, action) => {
-        state.map((Task) => {
-          if (Task.id === action.payload.id) {
-            Task.task = action.payload.task;
-          }
-        });
-      })
-      .addCase(updateTask.rejected, (state, action) => {
-        console.log("Failed to update Task", action.payload);
-      })
-      .addCase(updateTask.pending, (state, action) => {
-        console.log("Updating Task", action.payload);
-      });
-
       // Get Task
     builder
       .addCase(getTask.fulfilled, (state, action) => {
