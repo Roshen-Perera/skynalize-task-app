@@ -9,10 +9,7 @@ const Stack = createNativeStackNavigator();
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Dashboard"
-        screenOptions={{ headerShown: true }}
-      >
+      <Stack.Navigator initialRouteName="Dashboard" screenOptions={{ headerShown: true }}>
         <Stack.Screen name="Dashboard" component={Dashboard} />
         <Stack.Screen name="AddTask" component={AddTask} />
       </Stack.Navigator>
