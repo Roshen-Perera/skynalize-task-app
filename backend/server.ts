@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import taskRoutes from "./routes/task-routes";
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.use(cors({
     credentials: true
 }));
 
-
+app.use('/task',taskRoutes);
 
 app.listen(3000, (err => {
     console.log("Server running on port 3000");

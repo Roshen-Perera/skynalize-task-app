@@ -9,7 +9,6 @@ export async function addTask(t: Task){
     try{
        const newTask  = await prisma.task.create({
             data:{
-                id: t.id,
                 task: t.task
             }
         })
@@ -65,7 +64,6 @@ export async function updateTask(taskId: string, t: Task){
         await prisma.task.update({
             where:{ id : taskId},
             data:{
-                id: t.id,
                 task: t.task
             }
         })
