@@ -6,7 +6,7 @@ import  Tasks  from "../model/Task";
 export const initialState: Tasks[] = [];
 
 const api = axios.create({
-  baseURL: "http://10.50.238.18:3000",
+  baseURL: "http://192.168.1.18:3003",
   headers: {
     'Content-Type': 'application/json',
   },
@@ -39,6 +39,7 @@ export const deleteTask = createAsyncThunk(
   "Task/deleteTask",
   async (id: string) => {
     try {
+      console.log("id", id);
       const response = await api.delete(`/task/delete/${id}`);
       return response.data;
     } catch (error) {

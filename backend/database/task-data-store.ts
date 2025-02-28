@@ -26,6 +26,7 @@ export async function addTask(t: Task){
 }
 
 export async function deleteTask(id:string) {
+    console.log("ID of task to delete: ",id);
     try{
         await prisma.task.delete({
             where: {id: id}

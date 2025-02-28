@@ -30,6 +30,7 @@ export default function Dashboard({
 
   const handleDeleteTask = async (id: string) => {
     try {
+      console.log("ID: ",id);
       await dispatch(deleteTask(id));
       console.log("Task deleted successfully.");
     } catch (e) {
@@ -48,7 +49,7 @@ useEffect(() => {
       <View style={styles.taskContainer}>
         <View style={styles.items}>
           {Array.isArray(tasks) &&
-            tasks.map((task) => <Task key={task.id} text={task.task} onDelete={handleDeleteTask} />)}
+            tasks.map((task, index) => <Task key={index} text={task.task} onDelete={handleDeleteTask} id={task.id}/>)}
         </View>
       </View>
 
