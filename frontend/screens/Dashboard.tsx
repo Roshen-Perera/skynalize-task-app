@@ -32,6 +32,7 @@ export default function Dashboard({
     try {
       console.log("ID: ",id);
       await dispatch(deleteTask(id));
+      await dispatch(getTask());
       console.log("Task deleted successfully.");
     } catch (e) {
       console.error("Error deleting Task:", e);
@@ -48,13 +49,15 @@ useEffect(() => {
     <View style={styles.container}>
       <View style={styles.taskContainer}>
         <View style={styles.items}>
-          {Array.isArray(tasks) &&
-            tasks.map((task, index) => <Task key={index} text={task.task} onDelete={handleDeleteTask} id={task.id}/>)}
+          {tasks
+            .filter(
+              (task, index, self) =>
+                task &&
+                index === self.findIndex((t) => t?.id === task?.id) // Ensure unique task IDs
+            )
+            .map((task) => (<Task key={task.id} text={task.task} onDelete={handleDeleteTask} id={task.id}/>))}
         </View>
       </View>
-
-      {/* <StatusBar style="auto" /> */}
-
       <View style={styles.writeTaskWrapper}>
         <TouchableOpacity onPress={() => navigation.navigate("AddTask")}>
           <View style={styles.addWrapper}>
@@ -62,22 +65,6 @@ useEffect(() => {
           </View>
         </TouchableOpacity>
       </View>
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.writeTaskWrapper}
-      >
-        <TextInput
-          style={styles.input}
-          placeholder={"Write a task"}
-          value={task}
-          onChangeText={(text) => setTask(text)}
-        />
-        <TouchableOpacity onPress={handleAddTask}>
-          <View style={styles.addWrapper}>
-            <Text style={styles.addText}>+</Text>
-          </View>
-        </TouchableOpacity>
-      </KeyboardAvoidingView> */}
     </View>
   );
 }

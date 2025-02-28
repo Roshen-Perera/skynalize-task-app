@@ -2,12 +2,17 @@ import { useState } from "react";
 import {Text, TextInput, View, StyleSheet, Button, TouchableOpacity, KeyboardAvoidingView, Platform} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Tasks from "../model/Task";
-import { addTask } from "../reducers/TaskSlice";
+import { addTask, getTask } from "../reducers/TaskSlice";
 import { AppDispatch } from "../store/Store";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 
 
-export default function AddTask() {
+export default function AddTask({
+  navigation,
+}: {
+  navigation: NavigationProp<any>;
+}) {
     function generateId() {
       const now = new Date();
       const year = now.getFullYear();
@@ -32,6 +37,8 @@ export default function AddTask() {
       const newTask = new Tasks(id, task);
       try {
         await dispatch(addTask(newTask));
+        await dispatch(getTask());
+        navigation.navigate("Dashboard");
         console.log("Vehicle data saved successfully.");
       } catch (e) {
         console.error("Error saving vehicle data:", e);
