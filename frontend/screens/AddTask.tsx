@@ -20,13 +20,12 @@ export default function AddTask() {
       return `T-${year}${month}${day}-${hours}${minutes}${seconds}`;
     }
 
-    const [id, setId] = useState<string>("");
+    const [id, setId] = useState<string>(generateId());
     const [task, setTask] = useState<string>("");
 
     const dispatch = useDispatch<AppDispatch>();
 
     const handleAddTask = async () => {
-      setId(generateId());
       console.log(id);
 
       console.log(task);

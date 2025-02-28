@@ -3,9 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 type TaskProps = {
   text: string;
+  key: string;
+  onDelete: (id: string) => void;
 };
 
-const Task: React.FC<TaskProps> = ({ text }) => {
+const Task: React.FC<TaskProps> = ({ text, key, onDelete }) => {
   return (
     <View style={styles.item}>
       <View style={styles.itemLeft}>
@@ -13,7 +15,7 @@ const Task: React.FC<TaskProps> = ({ text }) => {
         <Text style={styles.itemText}>{text}</Text>
       </View>
       {/* Red circle delete button */}
-      <TouchableOpacity style={styles.deleteButton}>
+      <TouchableOpacity style={styles.deleteButton} onPress={() => onDelete(key)}>
         <Text style={styles.deleteText}>X</Text>
       </TouchableOpacity>
     </View>

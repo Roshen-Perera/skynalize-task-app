@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { AppDispatch } from "../store/Store";
 import { useDispatch, useSelector } from "react-redux";
 import Tasks from "../model/Task";
-import { addTask, getTask } from "../reducers/TaskSlice";
+import { addTask, deleteTask, getTask } from "../reducers/TaskSlice";
 export default function Dashboard({
   navigation,
 }: {
@@ -28,6 +28,14 @@ export default function Dashboard({
   const dispatch = useDispatch<AppDispatch>();
   const tasks = useSelector((state: { task: Tasks[] }) => state.task);
 
+  const handleDeleteTask = async (id: string) => {
+    try {
+      await dispatch(deleteTask(id));
+      console.log("Task deleted successfully.");
+    } catch (e) {
+      console.error("Error deleting Task:", e);
+    }
+  }
 
 useEffect(() => {
   if (Array.isArray(tasks) && tasks.length === 0) {
@@ -40,7 +48,7 @@ useEffect(() => {
       <View style={styles.taskContainer}>
         <View style={styles.items}>
           {Array.isArray(tasks) &&
-            tasks.map((task) => <Task key={task.id} text={task.task} />)}
+            tasks.map((task) => <Task key={task.id} text={task.task} onDelete={handleDeleteTask} />)}
         </View>
       </View>
 
